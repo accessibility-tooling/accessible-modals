@@ -5,7 +5,7 @@ exposing several methods for managing modal dialogs.
 
 ## Interactive Demo
 
-Checkout the interactive [demo](https://accessibility-tooling.github.io/accessible-modals/index) here.
+Checkout the interactive [demo](https://accessibility-tooling.github.io/accessible-modals/demo) here.
 
 ## Modal Hierarchy
 
