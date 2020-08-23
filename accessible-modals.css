@@ -10,14 +10,21 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-color: rgba(0.0, 0.0, 0.0, 0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 100;
 }
 
 .a11y-modal {
     background-color: white;
     border-radius: 8px;
+    width: 768px;
 }
+
+/* @media (max-width: 800px) {
+    .a11y-modal {
+        
+    }
+} */
 
 .a11y-modal-banner {
     background-color: white;
@@ -32,7 +39,7 @@
 }
 
 .a11y-modal-content {
-    background-color: #F9F9FB;
+    background-color: #f9f9fb;
     padding: 12px 24px;
     border-top: 1px solid #eee;
     border-bottom: 1px solid #eee;
