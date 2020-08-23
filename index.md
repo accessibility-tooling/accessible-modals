@@ -1,37 +1,90 @@
-## Welcome to GitHub Pages
+# Accessible Modals
 
-You can use the [editor on GitHub](https://github.com/accessibility-tooling/accessible-modals/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+JS for quickly making any modals accessibility friendly. The script adds a new property on the window called `a11yModal` 
+exposing several methods for managing modal dialogs.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+## Modal Hierarchy
 
-### Markdown
+- Modal Layer
+  - Modal Container
+    - Modal
+  - Modal Container
+    - Modal
+  - Modal Container
+    - Modal
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Getting Started 
 
-```markdown
-Syntax highlighted code block
+### Step 1 - Add a root modal layer
 
-# Header 1
-## Header 2
-### Header 3
+Any modals you wish to display should be placed within this modal layer. Multiple modals and nested modals
+are supported.
 
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```html
+<div class="a11y-modal-layer a11y-hidden">
+  // Modal containers go here.
+</div>
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### Step 2 - Add a modal container to the root layer
 
-### Jekyll Themes
+Now with your root layer configured you can add a modal container to the root layer. Whether you are implemented 
+multiple independent modals or a series of nested modals ALL modal containers are placed in the root of the 
+modal layer.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/accessibility-tooling/accessible-modals/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+```html
+<div class="a11y-modal-container">
+  <div class="a11y-modal" id="accessible-demo-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="a11y-modal-banner">
+      <h1 class="a11y-modal-title" id="modal-title">Modal Title</h1>
+    </div>
+    <div class="a11y-modal-content">
+      ...
+    </div>
+    <div class="a11y-modal-footer">
+      <button type="button" class="a11y-modal-dismiss">Cancel</button>
+    </div>
+  </div>
+</div>
+```
 
-### Support or Contact
+In order to proper implement acessible modals you need to ensure you properly indicate that your modal is fulfilling 
+the dialog role. The `a11y-modal-container` contains an element with the class `a11y-modal` which is marked with the requisit
+html attributes to indicate its intending purpose as a dialog element. You can see the following attributes are applied.
 
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+- `role="dialog"`
+- `aria-modal="true"`
+- `aria-labelledby="[INSERT MODAL TITLE ID]"`
+
+Of the three attributes above only `aria-labelledby` needs to be configured per modal. The modal markup contains an `h1` element
+with and id of `a11y-modal-title` continuing are example the `aria-labelledby` attribute for our example modal would be set
+to `a11y-modal-title`.
+
+## Nested Modals
+
+If you want to open modals from within other modals you simply have to add your nested modals markup to the root
+of the modal layer then either programmatically open it using `window.a11yModa.open(id)` or add
+a button toggle to the markup of another modal. If a modal is already open when `open` is called for this new modal 
+if will automatically open in front of the already opened modal and trap focus in the new modal.
+
+For example if using the markup from our getting started guide all you need to do is simply
+modify the modal footer to the following markup.
+
+```html
+<div class="a11y-modal-footer">
+  <button type="button" class="modal-toggle" data-target="accessible-demo-modal-sub">Open Sub Modal</button>
+  <button type="button" class="a11y-modal-dismiss">Cancel</button>
+</div>
+```
+
+Now the user has the option to either dismiss the first modal or open up the nested modal. You can freely continue to nest modals more deeply
+as focus will automatically be trapped to the new open modal instance and then promptly returned to the preceding instance once the nested
+modal is dismissed.
+
+## Modal Manager
+
+| Method    | Parameters                   | Description  |
+|-----------|------------------------------|---|
+| configure | modalIdentifier      | Creates a new modal instance if an instance exists nothing is done |
+| open      | modalIdentifier      | Opens the specified modal within the modal layer |
+| close     | modalInstance | Closes the specified modal within the modal layer |
