@@ -3,9 +3,35 @@
 <head>
     <title>Accessibility Tools</title>
     <link rel="stylesheet" href="./accessible-modals.css">
+
+    <style>
+        html, body {
+            padding: 30px;
+        }
+
+        .form-item {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-item label {
+            margin-bottom: 8px;
+        }
+
+        .form-item input {
+            height: 30px;
+        }
+
+        button {
+            height: 35px;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>Accessible Modal Demo</h1>
+    <p>Here is a working example of accessible modals using the accessible-modal.js script.</p>
     <button type="button" class="modal-toggle" data-target="accessible-demo-modal" id="btn-demo-modal-toggle" aria-label="Add shipping address">Add shipping address</button>
 
     <div class="a11y-modal-layer a11y-hidden">
@@ -16,8 +42,8 @@
                 </div>
                 <div class="a11y-modal-content">
                     <div class="form-item">
-                        <label for="first-focusable-element">Address Line 1</label>
-                        <input type="text" id="first-focusable-element" name="first-focusable-element" />
+                        <label for="AddressLine1">Address Line 1</label>
+                        <input type="text" id="AddressLine1" name="AddressLine1" />
                     </div>
                     <div class="form-item">
                         <label for="AddressLine2">Address Line 2</label>
@@ -38,7 +64,7 @@
                 </div>
                 <div class="a11y-modal-footer">
                     <button type="button" class="modal-toggle" data-target="accessible-demo-modal-sub">Open Sub Modal</button>
-                    <button type="button" class="a11y-modal-dismiss" id="last-focusable-element">Cancel</button>
+                    <button type="button" class="a11y-modal-dismiss">Cancel</button>
                 </div>
             </div>
         </div>

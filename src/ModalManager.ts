@@ -17,6 +17,8 @@ export default class ModalManager {
 
         this.instances = [];
         this.modalLayer = document.querySelector(`.${this.options.modalLayerClass}`);
+
+        document.addEventListener('keyup', this.handleKeyboardEvent);
     }
 
     configure = (modalIdentifier: string) => {
@@ -26,6 +28,53 @@ export default class ModalManager {
         modalInstance.firstFocusableElement = <HTMLElement>focusableNodeElements[0];
         modalInstance.lastFocusableElement = <HTMLElement>focusableNodeElements[focusableNodeElements.length - 1];
 
+        this.instances.push(modalInstance);
+
+        return modalInstance;
+    }
+
+    open = (modalIdentifier: string) => {
+        let modalInstance = this.instances.filter(function(instance: any) {
+            return instance.modalNode.id === modalIdentifier;
+        })[0];
+
+        if (!modalInstance) {
+            modalInstance = this.configure(modalIdentifier);
+        }
+
+        this.injectFocusTraps(modalInstance);
+
+        (<HTMLElement>modalInstance.modalNode.parentNode).classList.remove(this.options.hiddenClass);
+        
+        if (this.modalLayer.classList.contains(this.options.hiddenClass)) {
+            this.modalLayer.classList.remove(this.options.hiddenClass);
+        }
+
+        // focus first elem.
+        modalInstance.firstFocusableElement.focus();
+    }
+
+    close = (modalInstance: ModalInstance) => {
+        let modalIndex = this.instances.indexOf(modalInstance, 0);
+
+        if (modalIndex === -1) {
+            throw "Modal instance does not exist in modal layer.";
+        }
+
+        this.removeFocusTraps(modalInstance);
+        
+        // Add the a11y-hidden class back to the modal instances container.
+        (<HTMLElement>modalInstance.modalNode.parentNode).classList.add(this.options.hiddenClass);
+
+        // Remove the modal instance from the stored instances.
+        this.instances.splice(modalIndex, 1)[0];
+
+        if (modalIndex > 0) {
+            this.instances[modalIndex - 1].firstFocusableElement.focus();
+        }
+    }
+
+    private injectFocusTraps = (modalInstance: ModalInstance) => {
         modalInstance.firstFocusTrapElement = document.createElement('div');
         modalInstance.firstFocusTrapElement.tabIndex = 0;
 
@@ -42,40 +91,16 @@ export default class ModalManager {
 
         modalInstance.modalNode.parentNode.insertBefore(modalInstance.firstFocusTrapElement, modalInstance.modalNode);
         modalInstance.modalNode.parentNode.insertBefore(modalInstance.lastFocusTrapElement, modalInstance.modalNode.nextSibling);
-
-        this.instances.push(modalInstance);
-
-        return modalInstance;
     }
 
-    open = (modalIdentifier: string) => {
-        let modalInstance = this.instances.filter(function(instance: any) {
-            return instance.modalNode.id === modalIdentifier;
-        })[0];
-
-        if (!modalInstance) {
-            modalInstance = this.configure(modalIdentifier);
-            this.instances.push(modalInstance);
-        }
-
-        (<HTMLElement>modalInstance.modalNode.parentNode).classList.remove(this.options.hiddenClass);
-        
-        if (this.modalLayer.classList.contains(this.options.hiddenClass)) {
-            this.modalLayer.classList.remove(this.options.hiddenClass);
-        }
-
-        // focus first elem.
-        modalInstance.firstFocusableElement.focus();
+    private removeFocusTraps = (modalInstance: ModalInstance) => {
+        modalInstance.modalNode.parentNode.removeChild(modalInstance.firstFocusTrapElement);
+        modalInstance.modalNode.parentNode.removeChild(modalInstance.lastFocusTrapElement);
     }
 
-    close = (modalInstance: ModalInstance) => {
-        let modalIndex = this.instances.indexOf(modalInstance, 0);
-
-        this.instances.splice(modalIndex, 1);
-        (<HTMLElement>modalInstance.modalNode.parentNode).classList.add(this.options.hiddenClass);
-
-        if (modalIndex > 0) {
-            this.instances[modalIndex - 1].firstFocusableElement.focus();
+    private handleKeyboardEvent = (event: KeyboardEvent) => {
+        if (event.key.toLowerCase() === 'escape' && this.instances.length > 0) {
+            this.close(this.instances[this.instances.length - 1]);
         }
     }
 }
