@@ -3,6 +3,8 @@
 JS for quickly making any modals accessibility friendly. The script adds a new property on the window called `a11yModal` 
 exposing several methods for managing modal dialogs.
 
+For information on the accessibility of modals visit [here](https://www.w3.org/TR/wai-aria-practices-1.1/examples/dialog-modal/dialog.html).
+
 ## Interactive Demo
 
 Checkout the interactive [demo](https://accessibility-tooling.github.io/accessible-modals/demo) here.
