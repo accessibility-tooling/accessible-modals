@@ -3,6 +3,10 @@
 JS for quickly making any modals accessibility friendly. The script adds a new property on the window called `a11yModal` 
 exposing several methods for managing modal dialogs.
 
+## Interactive Demo
+
+Checkout the interactive [demo](https://accessibility-tooling.github.io/accessible-modals/index) here.
+
 ## Modal Hierarchy
 
 - Modal Layer
