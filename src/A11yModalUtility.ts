@@ -1,15 +1,15 @@
 import A11yModalInstance from "./A11yModalInstance";
-import A11yModalManagerOptions from "./A11yModalManagerOptions";
+import A11yModalUtilityOptions from "./A11yModalUtilityOptions";
 
 export default class A11yModalUtility {
     modalLayer: HTMLDivElement;
     instances: Array<A11yModalInstance> = [];
-    options: A11yModalManagerOptions;
+    options: A11yModalUtilityOptions;
 
-    constructor(options?: A11yModalManagerOptions) {
-        this.options = options || new A11yModalManagerOptions();
+    constructor(options?: A11yModalUtilityOptions) {
+        this.options = options || new A11yModalUtilityOptions();
         
-        let defaultOptions: A11yModalManagerOptions = new A11yModalManagerOptions();
+        let defaultOptions: A11yModalUtilityOptions = new A11yModalUtilityOptions();
 
         this.options.modalLayerClass = this.options.modalLayerClass || defaultOptions.modalLayerClass;
         this.options.hiddenClass = this.options.hiddenClass || defaultOptions.hiddenClass;

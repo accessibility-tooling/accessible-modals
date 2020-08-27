@@ -1,4 +1,4 @@
-import ModalManager from "./ModalManager";
+import ModalManager from "./A11yModalUtility";
 
 export default class A11yModalInstance {
     firstFocusTrapElement: HTMLDivElement;
