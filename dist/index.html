@@ -3,9 +3,35 @@
 <head>
     <title>Accessibility Tools</title>
     <link rel="stylesheet" href="./accessible-modals.css">
+
+    <style>
+        html, body {
+            padding: 30px;
+        }
+
+        .form-item {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-item label {
+            margin-bottom: 8px;
+        }
+
+        .form-item input {
+            height: 30px;
+        }
+
+        button {
+            height: 35px;
+        }
+    </style>
 </head>
 
 <body>
+    <h1>Accessible Modal Demo</h1>
+    <p>Here is a working example of accessible modals using the accessible-modal.js script.</p>
     <button type="button" class="modal-toggle" data-target="accessible-demo-modal" id="btn-demo-modal-toggle" aria-label="Add shipping address">Add shipping address</button>
 
     <div class="a11y-modal-layer a11y-hidden">

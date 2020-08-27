@@ -1,15 +1,15 @@
-import ModalManagerOptions from "./ModalManagerOptions";
-import ModalInstance from "./ModalInstance";
+import A11yModalInstance from "./A11yModalInstance";
+import A11yModalManagerOptions from "./A11yModalManagerOptions";
 
-export default class ModalManager {
+export default class A11yModalUtility {
     modalLayer: HTMLDivElement;
-    instances: Array<ModalInstance> = [];
-    options: ModalManagerOptions;
+    instances: Array<A11yModalInstance> = [];
+    options: A11yModalManagerOptions;
 
-    constructor(options?: ModalManagerOptions) {
-        this.options = options || new ModalManagerOptions();
+    constructor(options?: A11yModalManagerOptions) {
+        this.options = options || new A11yModalManagerOptions();
         
-        let defaultOptions: ModalManagerOptions = new ModalManagerOptions();
+        let defaultOptions: A11yModalManagerOptions = new A11yModalManagerOptions();
 
         this.options.modalLayerClass = this.options.modalLayerClass || defaultOptions.modalLayerClass;
         this.options.hiddenClass = this.options.hiddenClass || defaultOptions.hiddenClass;
@@ -22,7 +22,7 @@ export default class ModalManager {
     }
 
     configure = (modalIdentifier: string) => {
-        let modalInstance: ModalInstance = new ModalInstance(document.querySelector(`#${modalIdentifier}`), this);
+        let modalInstance: A11yModalInstance = new A11yModalInstance(document.querySelector(`#${modalIdentifier}`), this);
 
         let focusableNodeElements = modalInstance.modalNode.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])');
         modalInstance.firstFocusableElement = <HTMLElement>focusableNodeElements[0];
@@ -54,7 +54,7 @@ export default class ModalManager {
         modalInstance.firstFocusableElement.focus();
     }
 
-    close = (modalInstance: ModalInstance) => {
+    close = (modalInstance: A11yModalInstance) => {
         let modalIndex = this.instances.indexOf(modalInstance, 0);
 
         if (modalIndex === -1) {
@@ -74,7 +74,7 @@ export default class ModalManager {
         }
     }
 
-    private injectFocusTraps = (modalInstance: ModalInstance) => {
+    private injectFocusTraps = (modalInstance: A11yModalInstance) => {
         modalInstance.firstFocusTrapElement = document.createElement('div');
         modalInstance.firstFocusTrapElement.tabIndex = 0;
 
@@ -93,7 +93,7 @@ export default class ModalManager {
         modalInstance.modalNode.parentNode.insertBefore(modalInstance.lastFocusTrapElement, modalInstance.modalNode.nextSibling);
     }
 
-    private removeFocusTraps = (modalInstance: ModalInstance) => {
+    private removeFocusTraps = (modalInstance: A11yModalInstance) => {
         modalInstance.modalNode.parentNode.removeChild(modalInstance.firstFocusTrapElement);
         modalInstance.modalNode.parentNode.removeChild(modalInstance.lastFocusTrapElement);
     }
@@ -106,9 +106,9 @@ export default class ModalManager {
 }
 
 declare global {
-    interface Window { a11yModal: ModalManager; }
+    interface Window { a11yModalUtil: A11yModalUtility; }
 }
 
 window.addEventListener("DOMContentLoaded", () => {
-    window.a11yModal = window.a11yModal || new ModalManager();
+    window.a11yModalUtil = window.a11yModalUtil || new A11yModalUtility();
 })

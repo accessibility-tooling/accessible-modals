@@ -1,6 +1,6 @@
 import ModalManager from "./ModalManager";
 
-export default class ModalInstance {
+export default class A11yModalInstance {
     firstFocusTrapElement: HTMLDivElement;
     lastFocusTrapElement: HTMLDivElement;
 

@@ -1,4 +1,4 @@
-export default class ModalManagerOptions {
+export default class A11yModalManagerOptions {
     constructor(modalLayerClass?: string, hiddenClass?: string, dismissClass?: string) {
         
     }
